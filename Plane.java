@@ -14,10 +14,10 @@ public class Plane{
         row = plane.length;
         col = plane[0].length;
 
-        for(int r = 0; r < row - 8; r+=8)
-            for(int c = 0; c < col - 8; c+=8)
+        for(int r = 0; r < row; r+=8)
+            for(int c = 0; c < col; c+=8)
                 segments.add(new Segment(r, c, plane, layer));
-        //System.out.println(segments.size() + "\n");
+   
     }
     
     public List<Segment> getAllSeg() {

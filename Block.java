@@ -40,10 +40,20 @@ public class Block {
     public void conjugate() {
         for(int r = 0; r < 8; r++)
             for(int c = 0; c < 8; c++)
+                /*
+                 * checkererboard pattern please refer to papar written by Eiji Kawaguchi and Richard O.Eason
+                 * "Principle and applications of BPCS-Steganography"
+                 */
                 bl[r][c] ^= ((r % 2 == 0)?((c % 2 == 0)? 0 : 1) : ((c % 2 == 0)? 1 : 0)); // XOR  between payload block and checkerboard pattern
+        bl[0][0] = 1;
+        conjugated = true;
     }
 
     public boolean isConjugated() {
         return conjugated;
+    }
+
+    public int[][] getBlock(){
+        return bl;
     }
 }

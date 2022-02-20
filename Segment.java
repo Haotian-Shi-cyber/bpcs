@@ -32,5 +32,11 @@ public class Segment{
     public boolean isNoise(){
         return (getBorder() / 64.0) > 0.3;
     }
-
+    
+    public void replaceWith(Block data) {
+        int[][] temp = data.getBlock();
+        for(int r = row; r < row + 8; r++)
+            for(int c = col; c < col + 8; c++)
+                pl[r][c] = temp[r][c];
+    }
 }

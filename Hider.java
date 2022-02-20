@@ -14,9 +14,24 @@ public class Hider {
 
         /* get noise region's size avaliable to hide data*/
         System.out.println("Noise region avaliable(converted to bytes):" + 
-                vesHideSegs.size() * 63 / 8192 + " kilobytes");// reason to mutiply 63 is because each seg is 8*8 size seg
+                vesHideSegs.size() * 64 / 8192 + " kilobytes");// reason to mutiply 63 is because each seg is 8*8 size seg
 
         System.out.println("Enter name of files you want to hide (separated by semicolons): ");
+        PayloadFileProcess payload = new PayloadFileProcess(key.next());
 
+        System.out.println("Payload processed.");
+        System.out.println("Total # of blocks: " + payload.blockLength());
+        System.out.println("converted to bytes: " + payload.blockLength() * 64 / 8192 + " KB");
+        System.out.println(payload.getNumOfConjugated() + " blocks needed to be conjugated.");
+
+        if(payload.blockLength() > vesHideSegs.size())
+            throw new Exception("Payload too big!");
+        
+        for(int j = 0; j < payload.blockLength(); j++)
+            vesHideSegs.get(j).replaceWith(payload.getBlock(j));
+        System.out.println("Data now is hidden"); 
+
+        System.out.println("Enter name of result image: ");
+         
     }
 }

@@ -12,7 +12,7 @@ public class PayloadFileProcess {
         System.out.println("file is hidden");
         byte[] temp = buildByteFile(fileName);
         for(byte chunk:temp)
-            allBytes.add(chunk);
+            allBytes.add(chunk);//each chunk is one byte data
         
         bitify();// convert each char into 8 bits
         blockify();// group bytes into blocks
@@ -22,7 +22,7 @@ public class PayloadFileProcess {
         File payload = new File("Payloads/" + fileName);
         int fileLength = (int) payload.length();
 
-        System.out.println("File size: " + (fileLength / 1024) + " KB");
+        System.out.println("File size: " + fileLength + " B");
         System.out.println("File name: " + fileName);
         
         FileInputStream fis = new FileInputStream(payload);
@@ -31,12 +31,17 @@ public class PayloadFileProcess {
         byte[] byteFile = new byte[fileLength + fileName.length()];
         int contentStart = modifyHeader(fileLength, fileName, byteFile);
         fis.read(byteFile, contentStart, (int) payload.length());
-
+        //System.out.println(payload.length());
         return byteFile;
     }
 
     public int modifyHeader(int fileLength, String fileName, byte[] byteForm){
-    
+        System.out.println(fileName.length());
+        System.out.println(byteForm.length);
+        for(int i = 0; i < fileName.length(); i++){
+            byteForm[i] = (byte)(fileName.charAt(i));
+            //System.out.println(byteForm[i]);//print filename
+        }
         return fileName.length();// return start position
     }
 
@@ -50,15 +55,39 @@ public class PayloadFileProcess {
     }
 
     public void blockify(){
+        /*
+         * divide bits flow into separate blocks, each block has 64 bits
+         */
         int p = 0;
         blocks = new Block[(int) Math.ceil(bitForm.length / 63.0)];
         for (int j = 0; j < bitForm.length; j+=63) {
            int[] feed = new int[64];
            for (int k = 1; (j + k - 1) < bitForm.length && k < 64; k++)
-               feed[k] = bitForm[j + k - 1];
-           blocks[p++] = new Block(feed);
+               feed[k] = bitForm[j + k - 1];//feed[0] is always 0
+           blocks[p] = new Block(feed);
+           p++;
         }
+        System.out.println(p);
     }
 
+    public int blockLength() {
+        /*
+         * return blocks' length
+         */
+        return blocks.length;
+    }
+
+    public int getNumOfConjugated() {
+        int count = 0;
+        for(Block block:blocks)
+            if(block.isConjugated())
+                count++;
+        return count;
+
+    }
+
+    public Block getBlock(int i) {
+        return blocks[i];
+    }
 
 }
