@@ -32,12 +32,16 @@ public class Pixel {
         alphaBits = alphaBitsArr.clone();
 
         for(int j = 0; j < 24; j++) {
-            if(j % 3 == 0) cgcBlue += (cgcBits[j] << (j / 3));
-            else if(j % 3 == 1) cgcGreen += (cgcBits[j] << (j / 3));
-            else cgcRed += (cgcBits[j] << (j / 3));
+            if(j % 3 == 0) 
+                cgcBlue += (cgcBits[j] << (j / 3));
+            else if(j % 3 == 1) 
+                cgcGreen += (cgcBits[j] << (j / 3));
+            else 
+                cgcRed += (cgcBits[j] << (j / 3));
         }
 
-        for(int j = 0; j < 8; j++) alpha += (alphaBits[j] << j);
+        for(int j = 0; j < 8; j++) 
+            alpha += (alphaBits[j] << j);
 
         bpcRed = getBPC(cgcRed);
         bpcGreen = getBPC(cgcGreen);

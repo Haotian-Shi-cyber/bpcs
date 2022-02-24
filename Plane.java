@@ -20,6 +20,7 @@ public class Plane{
    
     }
     
+
     public List<Segment> getAllSeg() {
         return segments;
     }
@@ -30,5 +31,17 @@ public class Plane{
             if (segment.isNoise())
                 complexSeg.add(segment);
         return complexSeg;
+    }
+
+    public int getWidth() {
+        return col;
+    }
+
+    public int getHeight() {
+        return row;
+    }
+
+    public int getBit(int r, int c) {
+        return plane[r][c];
     }
 }

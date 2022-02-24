@@ -26,12 +26,20 @@ public class Hider {
 
         if(payload.blockLength() > vesHideSegs.size())
             throw new Exception("Payload too big!");
-        
+
         for(int j = 0; j < payload.blockLength(); j++)
             vesHideSegs.get(j).replaceWith(payload.getBlock(j));
         System.out.println("Data now is hidden"); 
 
         System.out.println("Enter name of result image: ");
-         
+        ResultImage result = new ResultImage(key.next());
+        
+        result.processPlanes(vessel.getRGBPlanes(), vessel.getAlphaPlanes());
+        result.constructImage();
+
+        System.out.println("Result image generated!");
+
+        key.close();
+
     }
 }

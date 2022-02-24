@@ -62,4 +62,12 @@ public class ImageReader {
         return hiderSegments;
     }
 
+    public Plane[] getRGBPlanes(){
+        return rgbPlanes;
+    }
+
+    public Plane[] getAlphaPlanes(){
+        return alphaPlanes;
+    }
+
 }
