@@ -40,4 +40,14 @@ public class Segment{
             for(int c = col; c < col + 8; c++)
                 pl[r][c] = temp[r - row][c - col];
     }
+
+    public int[][] getSegMatrix() {
+        int[][] temp = new int[8][8];
+
+        for(int r = row; r < row + 8; r++)
+            for(int c = col; c < col + 8; c++)
+                temp[r - row][c - col] = pl[r][c];
+
+        return temp;
+    }
 }
