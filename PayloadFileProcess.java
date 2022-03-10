@@ -41,7 +41,6 @@ public class PayloadFileProcess {
 
         for (int k = 0; k < 4; k++){
             byteForm[k] = (byte) ((fileLength >> (24 - k*8)) & 0xFF);// read the length of fileload
-            System.out.println(byteForm[k]);
         }
         byteForm[4] = (byte) (fileName.length());
         System.out.println(byteForm[4]);
