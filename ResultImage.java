@@ -6,11 +6,13 @@ public class ResultImage{
     private int height, width;
     private String name;
     private Pixel[][] pixels;
-
+    
+    /* result image name */
     public ResultImage(String name) {
         this.name = "StegResults/" + name;
     }
 
+    /* process planes into pixels */
     public void processPlanes(Plane[] rgbPlanes, Plane[] alphaPlanes) {
         height = rgbPlanes[0].getHeight();
         width = rgbPlanes[0].getWidth();
@@ -34,6 +36,7 @@ public class ResultImage{
             
     }
     
+    /* construct image */
     public void constructImage() throws IOException { 
         BufferedImage img = new BufferedImage(width, height, 2);//2 is TYPE_INT_ARGB
 

@@ -5,9 +5,12 @@ import java.util.*;
 
 
 public class ImageReader {
+	
     private Pixel[][] pixels;
     private int width, height;
     private Plane[] rgbPlanes, alphaPlanes;
+    
+    /* contructor to read image into pixels array, also calls bitPlane to generate bit planes */
     public ImageReader(String fileName) throws IOException {
         BufferedImage image = ImageIO.read(new File(fileName));
 
@@ -24,11 +27,13 @@ public class ImageReader {
 
         bitPlane();
     }
-
+    
+    /* default constructor with no input filename */
     public ImageReader() throws IOException {
-        this("Vessel.png");
+        this("Baboon.png");
     }
 
+    /* generate bit planes,one alphaPlane and three rgb planes */
     public void bitPlane() {
         rgbPlanes = new Plane[24];
         alphaPlanes = new Plane[8];
@@ -51,7 +56,8 @@ public class ImageReader {
 
 
     }
-
+    
+    /* get list of Hider segments */
     public List<Segment> getHiderSegs(){
         List<Segment> hiderSegments = new ArrayList<Segment>();
         for (int i = 0; i < 24; i++) 
@@ -62,10 +68,12 @@ public class ImageReader {
         return hiderSegments;
     }
 
+    /* return rgb planes */
     public Plane[] getRGBPlanes(){
         return rgbPlanes;
     }
-
+    
+    /* return alpha planes */
     public Plane[] getAlphaPlanes(){
         return alphaPlanes;
     }

@@ -2,6 +2,7 @@ public class Block {
     private int[][] bl;
     private boolean conjugated;
 
+    /* 8*8 block */
     public Block(int[] block){
         bl = new int[8][8];
         int q = 0;
@@ -14,6 +15,7 @@ public class Block {
           conjugate(); // conjugate it if no complex enough 
     }
     
+    /* get total number of changes inside the block */
     public int getBorder() {
         int changes = 0;
 
@@ -29,14 +31,16 @@ public class Block {
                 if(bl[r][c] != bl[r-1][c])
                     changes++;
 
-        return changes;
+        return changes; // return total changes of this block
         
     }
 
+    /* decided the noise region by equation */
     public boolean isComplex() {
         return (getBorder() / 64.0) > 0.3; 
     }
 
+    /* conjugate block */
     public void conjugate() {
         for(int r = 0; r < 8; r++)
             for(int c = 0; c < 8; c++)
@@ -49,10 +53,12 @@ public class Block {
         conjugated = true;
     }
 
+    /* block is conjugated or not */
     public boolean isConjugated() {
         return conjugated;
     }
 
+    /* get this block */
     public int[][] getBlock(){
         return bl;
     }

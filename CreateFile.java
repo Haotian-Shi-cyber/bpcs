@@ -5,6 +5,7 @@ public class CreateFile {
     private List<Character> text;
     private int[] bitForm;
 
+    /* create bit flow while conjugate back to original bits */
     public CreateFile(List<Segment> segments) {
         bitForm = new int[segments.size() * 64];
         int q = 0;
@@ -22,12 +23,15 @@ public class CreateFile {
                     bitForm[q++] = temp[i][j];
         }
     }
-
+    
+    /* construct file from bit flow */
     public void contructFile() throws IOException {
         int fileLength = getLength();
         String filename = getFileName();
 
         int prefixLen = 40 + filename.length() * 8;
+        System.out.println("File size: " + (fileLength / 1024) + " KB");
+        System.out.println("File name: " + filename);
         
         byte[] byteForm = new byte[fileLength];
 
@@ -35,7 +39,7 @@ public class CreateFile {
             int store = 0;
             for(int n = 0; n < 8; n++)
                 store += bitForm[m+n] << (7-n);
-            byteForm[(m - prefixLen) / 8] = (byte) (store);
+            byteForm[(m - prefixLen) / 8] = (byte) (store - 128);
         }
         
         
@@ -45,15 +49,17 @@ public class CreateFile {
 
     }
     
+    /* get file length */
     public int getLength() {
         int filelength = 0;
         for(int m = 0; m < 32; m++)
             filelength += bitForm[m] << (31 - m);
         
-        System.out.println(filelength);
+        //System.out.println(filelength);
         return filelength;
     }
 
+    /* get file names */
     public String getFileName() {
         int lengthOfname = 0;
         for(int m = 32; m < 40; m++) {

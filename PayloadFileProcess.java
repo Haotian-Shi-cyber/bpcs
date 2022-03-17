@@ -6,6 +6,7 @@ public class PayloadFileProcess {
     private int[] bitForm;
     private Block[] blocks;
 
+    /* constructor to process payload file */
     public PayloadFileProcess(String fileName) throws IOException, FileNotFoundException {
         allBytes = new ArrayList<Byte>();
         
@@ -17,57 +18,53 @@ public class PayloadFileProcess {
         bitify();// convert each char into 8 bits
         blockify();// group bytes into blocks
     }
-
+    
+    /* create payload bytes flow */
     public byte[] buildByteFile(String fileName) throws IOException, FileNotFoundException {
         File payload = new File("Payloads/" + fileName);
         int fileLength = (int) payload.length();
 
-        //System.out.println("File size: " + fileLength + " B");
-        //System.out.println("File name: " + fileName);
-        
+        System.out.println("File size: " + (fileLength / 1024) + " KB");                                                    
+        System.out.println("File name: " + fileName);   
+
         FileInputStream fis = new FileInputStream(payload);
         
 
         byte[] byteFile = new byte[fileLength + fileName.length() + 5];
         int contentStart = modifyHeader(fileLength, fileName, byteFile);
         fis.read(byteFile, contentStart, (int) payload.length());
-        //System.out.println(payload.length());
+
         return byteFile;
     }
-
+    
+    /* add header bits into bitflow */
     public int modifyHeader(int fileLength, String fileName, byte[] byteForm){
-        //System.out.println(fileName.length());
-        //System.out.println(byteForm.length);
 
         for (int k = 0; k < 4; k++){
-            byteForm[k] = (byte) ((fileLength >> (24 - k*8)) & 0xFF);// read the length of fileload
+            byteForm[k] = (byte) (((fileLength >> (24 - k*8)) & 0xFF)-128);// read the length of fileload
         }
-        byteForm[4] = (byte) (fileName.length());
-        System.out.println(byteForm[4]);
-        System.out.println(byteForm[4]);
+        byteForm[4] = (byte) (fileName.length()-128);
 
         int j = 0;
         for(int i = 5; i < 5 + fileName.length(); i++){
-            byteForm[i] = (byte)(fileName.charAt(j++));
+            byteForm[i] = (byte)(fileName.charAt(j++)-128);
             //System.out.println(byteForm[i]);//print filename
         }
         return fileName.length() + 5;// return start position
     }
-
+    
+    /* convert bytes flow into bits flow */
     public void bitify(){
         int q = 0;
         bitForm = new int[allBytes.size() * 8];
         for(byte val : allBytes)
             for(int k = 0; k < 8;k++)
-                bitForm[q++] = (val >> (7 - k)) % 2;
-    //    for (int i = 0; i < 32; i++)
-      //      System.out.println(bitForm[i]);
+                bitForm[q++] = ((val + 128)>> (7 - k)) % 2;
     }
-
+    
+    
+    /* divide bits flow into separate blocks, each block has 64 bits */
     public void blockify(){
-        /*
-         * divide bits flow into separate blocks, each block has 64 bits
-         */
         int p = 0;
         blocks = new Block[(int) Math.ceil(bitForm.length / 63.0)];
         for (int j = 0; j < bitForm.length; j+=63) {
@@ -77,16 +74,14 @@ public class PayloadFileProcess {
            blocks[p] = new Block(feed);
            p++;
         }
-        System.out.println(p);
     }
 
+    /* return blocks' length */
     public int blockLength() {
-        /*
-         * return blocks' length
-         */
         return blocks.length;
     }
 
+    /* get number of conjugated blocks */
     public int getNumOfConjugated() {
         int count = 0;
         for(Block block:blocks)
@@ -95,7 +90,8 @@ public class PayloadFileProcess {
         return count;
 
     }
-
+    
+    /* get block by index */
     public Block getBlock(int i) {
         return blocks[i];
     }

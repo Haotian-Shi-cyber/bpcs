@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 
+/* extractor main function */
 public class Extractor {
     public static void main(String[] args) throws Exception {
         Scanner key = new Scanner(System.in);

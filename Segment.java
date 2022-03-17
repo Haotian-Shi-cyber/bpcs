@@ -4,13 +4,15 @@ public class Segment{
     private int row, col, layer;
     private int[][] pl;
     
+    /* segment attribute */
     public Segment(int r, int c, int[][] plane, int i) {
         row = r;
         col = c;
         pl = plane;
         layer = i;
     }
-
+    
+    /* get segment's number of changes */
     public int getBorder(){
         int changes = 0;
 
@@ -28,11 +30,13 @@ public class Segment{
         //System.out.println(changes + "\n");       
         return changes;
     }
-
+    
+    /* get noise region */
     public boolean isNoise(){
         return (getBorder() / 64.0) > 0.3;
     }
     
+    /* replace segment with payload block */
     public void replaceWith(Block data) {
         int[][] temp = data.getBlock();
 
@@ -40,7 +44,8 @@ public class Segment{
             for(int c = col; c < col + 8; c++)
                 pl[r][c] = temp[r - row][c - col];
     }
-
+    
+    /* segment planes */
     public int[][] getSegMatrix() {
         int[][] temp = new int[8][8];
 

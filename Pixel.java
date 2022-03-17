@@ -27,6 +27,7 @@ public class Pixel {
         //operation shifts num j bits to the right, then masks everything except least significant
     }
 
+    /* convert into bpc bits */
     public Pixel(int[] cgcBitsArr, int[] alphaBitsArr) {
         cgcBits = cgcBitsArr.clone();
         alphaBits = alphaBitsArr.clone();
@@ -47,25 +48,30 @@ public class Pixel {
         bpcGreen = getBPC(cgcGreen);
         bpcBlue = getBPC(cgcBlue);
     }
-
+    
+    /* get bpc bits flow */
     public int getBPC(int cgc) {
         int bpc = cgc;
         for(int mask = bpc >> 1; mask != 0; mask >>= 1) bpc ^= mask;
         return bpc;
     }
-
+    
+    /* convert and return cgc bits flow */
     public int getCGC(int bpc) {
         return bpc ^ (bpc >> 1); //XOR to convert to cgc
     }
-
+    
+    /* get cgc bit by index */
     public int getCGCBit(int dex) {
         return cgcBits[dex];
     }
-
+    
+    /* get alpha bit by index */
     public int getAlphaBit(int dex) {
         return alphaBits[dex];
     }
-
+    
+    /* get rgb planes */
     public int getRGB() {
         return (alpha << 24) | (bpcRed << 16) | (bpcGreen << 8) | (bpcBlue);
     }
